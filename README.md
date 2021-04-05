@@ -242,6 +242,26 @@ Executar o comando
 kafka-console-consumer --from-beginning --bootstrap-server :9092 --topic contatos
 ```
 
+## Firewall
+
+Lista de serviços / portas:
+
+Serviço|Porta
+---- | ----
+Zookeeper|2181
+Kafka|9092
+MySQL|3306
+Debezium Kafka Connector|8083
+Exemplo API|8080
+
+## Contribuições são bem-vindas 💜
+
+Levante um problema para discutir suas sugestões ou abra um `Pull Request` para solicitar melhorias.
+
+## Reviewers 🔎
+
+[comment]: <> (Muito obrigado para [@dancarv]&#40;https://github.com/dancarv&#41; e [@schmidt-samuel]&#40;https://github.com/schmidt-samuel&#41; por revisar este projeto.)
+
 ## Referencias 🔥
 - https://debezium.io/documentation/reference/tutorial.html
 - http://kafka.apache.org/quickstart
@@ -249,3 +269,6 @@ kafka-console-consumer --from-beginning --bootstrap-server :9092 --topic contato
 - https://spring.io/projects/spring-restdocs
 - https://spring.io/projects/spring-data-jpa
 
+## Licença 🗞
+
+> Copyright © 2021
