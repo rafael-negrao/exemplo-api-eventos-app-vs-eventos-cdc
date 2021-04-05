@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<include resource="org/springframework/boot/logging/logback/base.xml"/>
+	<springProperty scope="context" name="springAppName" source="spring.application.name" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+			{
+			"serviceName": "${springAppName:-}",
+			"severity": "%level",
+			"x-correlation-id": "%X{x-correlation-id:-}",
+			"trace": "%X{X-B3-TraceId:-}",
+			"span": "%X{X-B3-SpanId:-}",
+			"parent": "%X{X-B3-ParentSpanId:-}",
+			"exportable":
+			"%X{X-Span-Export:-}",
+			"pid": "${PID:-}",
+			"thread": "%thread",
+			"class": "%logger{40}",
+			"rest": "%message"
+			}
+			</pattern>
+		</encoder>
+	</appender>
+
+	<springProfile name="!docker">
+		<root level="info">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</root>
+	</springProfile>
+	<springProfile name="docker">
+		<root level="info">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</root>
+	</springProfile>
+<!--	<springProfile name="docker">-->
+<!--		<root level="error">-->
+<!--			<appender-ref ref="STDOUT" />-->
+<!--		</root>-->
+<!--	</springProfile>-->
+
+</configuration>

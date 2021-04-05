@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: exemplo-api
+  profiles:
+    active: local
+
+app:
+  version: $project.version$
+
+server:
+  port: 8080
+
+management:
+  security:
+    enabled: false
+
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.web: INFO
+    br.com.exemploapi: INFO
+
+---
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/exemplodb
+    username: exemplouser
+    password: exemplouser
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+  kafka:
+    bootstrap-servers: localhost:9092
+    client-id: $project.name$
+
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.web: DEBUG
+    br.com.exemploapi: DEBUG
+
+---
+spring:
+  profiles: docker
+  datasource:
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    client-id: $project.name$
+
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.web: DEBUG
+    br.com.exemploapi: DEBUG
