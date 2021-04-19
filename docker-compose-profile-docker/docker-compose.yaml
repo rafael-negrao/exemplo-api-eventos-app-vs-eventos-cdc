@@ -1,7 +1,7 @@
 version: '2'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:6.1.1
+    image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
     hostname: zookeeper
     ports:
@@ -13,17 +13,15 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: confluentinc/cp-server:6.1.1
+    image: confluentinc/cp-kafka:latest
     container_name: kafka
-    hostname: kakfa
+    hostname: kafka
     ports:
       - 9092:9092
       - 9094:9094
     depends_on:
       - zookeeper
     environment:
-      HOSTNAME_COMMAND: curl http://169.254.169.254/latest/meta-data/public-hostname
-      ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
