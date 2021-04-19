@@ -57,6 +57,13 @@ Usar a opção `-d` para rodar em segundo plano (background)
 docker-compose -f docker-compose.yaml up -d
 ```
 
+> Para o **docker-compose** da pasta **docker-compose-profile-docker** é necessário exportar esta variável de ambiente. Este comando tem como objetivo permitir que hosts externos conectem no kafka. O teste foi realizado em ec2 da amazon.
+
+```shell
+HOSTNAME_COMMAND=$(curl http://169.254.169.254/latest/meta-data/public-hostname)
+export HOSTNAME_COMMAND
+```
+
 ## Como compilar a aplicação
 
 Executar o comando abaixo:
@@ -114,9 +121,14 @@ docker exec -it mysql bash
 mysql -uroot -pexemploapi
 ```
 3. Conectar no mysql
-```shell
+```mysql
 ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'exemploapi';
 FLUSH PRIVILEGES;
+QUIT;
+```
+4. Para sair do docker do mysql
+```shell
+exit
 ```
 
 ### Kafka Connect - Status
@@ -248,8 +260,10 @@ Lista de serviços / portas:
 
 Serviço|Porta
 ---- | ----
+Http|80
 Zookeeper|2181
-Kafka|9092
+Kafka acesso via localhost|9092
+Kafka acesso externo a VM|9094
 MySQL|3306
 Debezium Kafka Connector|8083
 Exemplo API|8080
