@@ -60,7 +60,7 @@ docker-compose -f docker-compose.yaml up -d
 > Para o **docker-compose** da pasta **docker-compose-profile-docker** é necessário exportar esta variável de ambiente. Este comando tem como objetivo permitir que hosts externos conectem no kafka. O teste foi realizado em ec2 da amazon.
 
 ```shell
-HOSTNAME_COMMAND=$(curl http://169.254.169.254/latest/meta-data/public-hostname)
+HOSTNAME_COMMAND=$(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 
 export HOSTNAME_COMMAND
 ```
 
