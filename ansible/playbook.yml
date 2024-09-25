@@ -1,0 +1,83 @@
+---
+- name: Install Java, Maven, and Docker
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Java (OpenJDK 11)
+      apt:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Verify Java installation
+      command: java -version
+      register: java_version_output
+      ignore_errors: yes
+
+    - name: Print Java version
+      debug:
+        var: java_version_output.stdout
+
+    - name: Install Maven
+      apt:
+        name: maven
+        state: present
+
+    - name: Verify Maven installation
+      command: mvn -version
+      register: maven_version_output
+      ignore_errors: yes
+
+    - name: Print Maven version
+      debug:
+        var: maven_version_output.stdout
+
+    - name: Install dependencies for Docker
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Add Docker's official GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+
+    - name: Ensure Docker is started and enabled
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Add current user to Docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+
+    - name: Verify Docker installation
+      command: docker --version
+      register: docker_version_output
+      ignore_errors: yes
+
+    - name: Print Docker version
+      debug:
+        var: docker_version_output.stdout
