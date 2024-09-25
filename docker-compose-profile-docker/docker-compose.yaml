@@ -67,7 +67,10 @@ services:
       - exemplo-tier
 
   exemploapi:
-    image: exemplo-api:latest
+    build:
+      context: ../
+      dockerfile: Dockerfile
+#    image: exemplo-api:latest
     container_name: exemploapi
     hostname: exemploapi
     ports:
