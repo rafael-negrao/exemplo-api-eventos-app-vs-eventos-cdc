@@ -1,0 +1,28 @@
+---
+- name: Clone Git repository and run Maven build
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Ensure Git is installed
+      apt:
+        name: git
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure Maven is installed
+      apt:
+        name: maven
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Clone Git repository
+      git:
+        repo: "https://github.com/rafael-negrao/exemplo-api-eventos-app-vs-eventos-cdc.git"
+        dest: "/home/ubuntu/exemplo-api-eventos-app-vs-eventos-cdc"
+        version: "main"
+
+    - name: Run Maven clean install
+      shell: "mvn clean install"
+      args:
+        chdir: "/home/ubuntu/exemplo-api-eventos-app-vs-eventos-cdc"

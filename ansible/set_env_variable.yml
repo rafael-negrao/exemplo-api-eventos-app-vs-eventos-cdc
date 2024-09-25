@@ -1,0 +1,27 @@
+---
+- name: Set environment variable permanently in /etc/environment
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Ensure the environment variable is present in /etc/environment
+      lineinfile:
+        path: /etc/environment
+        regexp: '^HOSTNAME_COMMAND='
+        line: 'HOSTNAME_COMMAND=18.204.70.91'
+        state: present
+
+    - name: Apply the environment variable for the current session
+      shell: "export HOSTNAME_COMMAND=18.204.70.91"
+      environment:
+        HOSTNAME_COMMAND: "18.204.70.91"
+      register: export_result
+
+    - name: Show the applied environment variable (for verification)
+      command: echo $HOSTNAME_COMMAND
+      register: current_env
+      changed_when: false
+
+    - name: Display current environment variable
+      debug:
+        msg: "HOSTNAME_COMMAND is set to {{ current_env.stdout }}"

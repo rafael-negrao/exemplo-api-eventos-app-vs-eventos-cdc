@@ -1,0 +1,19 @@
+---
+- name: Set environment variable and run Docker Compose
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Run Docker Compose with environment variable
+      shell: |
+        docker compose -f docker-compose-profile-docker/docker-compose.yaml up -d --build
+      args:
+        chdir: "/home/ubuntu/exemplo-api-eventos-app-vs-eventos-cdc"
+      environment:
+        HOSTNAME_COMMAND: "52.21.17.96"

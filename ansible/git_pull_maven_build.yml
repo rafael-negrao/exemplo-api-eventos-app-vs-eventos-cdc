@@ -1,0 +1,42 @@
+---
+- name: Git pull and build with Maven
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Ensure Git is installed
+      apt:
+        name: git
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure Maven is installed
+      apt:
+        name: maven
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Check if the repository exists
+      stat:
+        path: "/home/ubuntu/exemplo-api-eventos-app-vs-eventos-cdc/.git"
+      register: repo_exists
+
+    - name: Clone the Git repository if it doesn't exist
+      git:
+        repo: "https://github.com/rafael-negrao/exemplo-api-eventos-app-vs-eventos-cdc.git"
+        dest: "/home/ubuntu/exemplo-api-eventos-app-vs-eventos-cdc"
+        version: "main"
+      when: not repo_exists.stat.exists
+
+    - name: Pull latest changes from Git repository if it exists
+      git:
+        repo: "https://github.com/rafael-negrao/exemplo-api-eventos-app-vs-eventos-cdc.git"
+        dest: "/home/ubuntu/exemplo-api-eventos-app-vs-eventos-cdc"
+        version: "main"
+        update: yes
+      when: repo_exists.stat.exists
+
+    - name: Run Maven clean install
+      shell: "mvn clean install"
+      args:
+        chdir: "/home/ubuntu/exemplo-api-eventos-app-vs-eventos-cdc"
