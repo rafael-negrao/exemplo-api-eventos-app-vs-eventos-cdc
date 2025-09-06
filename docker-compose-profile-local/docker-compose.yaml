@@ -34,7 +34,7 @@ services:
       - exemplo-tier
 
   mysql:
-    image: library/mysql:8.0.23
+    image: library/mysql:8.0.31
     container_name: mysql
     hostname: mysql
     ports:
