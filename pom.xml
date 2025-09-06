@@ -24,12 +24,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <docencoding>UTF-8</docencoding>
 
-        <java.version>1.8</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
 
-        <scala.version>2.13.5</scala.version>
-        <scala.compat.version>2.13.5</scala.compat.version>
+        <scala.version>2.13.16</scala.version>
+        <scala.compat.version>2.13.16</scala.compat.version>
         <scala.binary.version>2.13</scala.binary.version>
 
         <spring.cloud.version>Hoxton.SR7</spring.cloud.version>
