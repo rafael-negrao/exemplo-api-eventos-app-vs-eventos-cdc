@@ -2,19 +2,21 @@
 - name: Set environment variable permanently in /etc/environment
   hosts: all
   become: yes
+  vars:
+    hostname_ip: "{{ target_ip | default('3.218.204.213') }}"
   tasks:
 
     - name: Ensure the environment variable is present in /etc/environment
       lineinfile:
         path: /etc/environment
         regexp: '^HOSTNAME_COMMAND='
-        line: 'HOSTNAME_COMMAND=18.204.70.91'
+        line: 'HOSTNAME_COMMAND={{ hostname_ip }}'
         state: present
 
     - name: Apply the environment variable for the current session
-      shell: "export HOSTNAME_COMMAND=18.204.70.91"
+      shell: "export HOSTNAME_COMMAND={{ hostname_ip }}"
       environment:
-        HOSTNAME_COMMAND: "18.204.70.91"
+        HOSTNAME_COMMAND: "{{ hostname_ip }}"
       register: export_result
 
     - name: Show the applied environment variable (for verification)
