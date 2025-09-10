@@ -6,7 +6,12 @@
   - docker
 
 ```shell
-export VM_TARGET="INFORMAR O IP DO TARGET"
+# Extrair o IP público usando grep e awk
+export VM_TARGET=$(grep -A 5 '"public_ip":' terraform/terraform.tfstate | grep -v null | head -1 | awk -F'"' '{print $4}')
+
+# Verificar se foi extraído corretamente
+echo "IP público: $VM_TARGET"
+
 ansible-playbook -i ${VM_TARGET}, -u ubuntu --private-key ./terraform/laboratorio/laboratorio-cdc-ec2-key.pem ansible/instalacao-base.yml
 ```
 
@@ -14,14 +19,24 @@ ansible-playbook -i ${VM_TARGET}, -u ubuntu --private-key ./terraform/laboratori
 - Rodar: mvn clean install
 
 ```shell
-export VM_TARGET="INFORMAR O IP DO TARGET"
+# Extrair o IP público usando grep e awk
+export VM_TARGET=$(grep -A 5 '"public_ip":' terraform/terraform.tfstate | grep -v null | head -1 | awk -F'"' '{print $4}')
+
+# Verificar se foi extraído corretamente
+echo "IP público: $VM_TARGET"
+
 ansible-playbook -i ${VM_TARGET}, -u ubuntu --private-key ./terraform/laboratorio/laboratorio-cdc-ec2-key.pem ansible/git_pull_maven_build.yml
 ```
 
 - Criar variavel de ambiente na máquina para o IP Externo
 
 ```shell
-export VM_TARGET="INFORMAR O IP DO TARGET"
+# Extrair o IP público usando grep e awk
+export VM_TARGET=$(grep -A 5 '"public_ip":' terraform/terraform.tfstate | grep -v null | head -1 | awk -F'"' '{print $4}')
+
+# Verificar se foi extraído corretamente
+echo "IP público: $VM_TARGET"
+
 ansible-playbook -i ${VM_TARGET}, -u ubuntu --private-key ./terraform/laboratorio/laboratorio-cdc-ec2-key.pem ansible/set_env_variable.yml -e "target_ip=${VM_TARGET}"
 ```
 
