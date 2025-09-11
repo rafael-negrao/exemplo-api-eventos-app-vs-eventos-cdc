@@ -1,0 +1,35 @@
+---
+- name: Stop Docker Compose services
+  hosts: all
+  become: yes
+  vars:
+    project_dir: "/home/ubuntu/exemplo-api-eventos-app-vs-eventos-cdc"
+    compose_file: "docker-compose-profile-docker/docker-compose.yaml"
+
+  tasks:
+    - name: Check if project directory exists
+      stat:
+        path: "{{ project_dir }}"
+      register: project_dir_stat
+
+    - name: Stop Docker Compose services
+      shell: |
+        docker compose -f {{ compose_file }} down --volumes --remove-orphans
+      args:
+        chdir: "{{ project_dir }}"
+      when: project_dir_stat.stat.exists
+      register: compose_stop_result
+
+    - name: Display stop result
+      debug:
+        var: compose_stop_result.stdout_lines
+      when: compose_stop_result is defined
+
+    - name: Remove unused Docker resources
+      shell: |
+        docker system prune -f --volumes
+      register: prune_result
+
+    - name: Display cleanup result
+      debug:
+        var: prune_result.stdout_lines
