@@ -66,6 +66,25 @@ services:
     networks:
       - exemplo-tier
 
+  redpanda-console:
+    image: redpandadata/console:v2.3.1
+    container_name: redpanda-console
+    hostname: redpanda-console
+    ports:
+      - 8090:8080
+    networks:
+      - exemplo-tier
+    environment:
+#      CONFIG_FILEPATH: /tmp/config.yml
+      KAFKA_BROKERS: kafka:29092
+      KAFKA_SCHEMAREGISTRY_ENABLED: "false"
+#      KAFKA_SCHEMAREGISTRY_URLS: http://redpanda:8081
+      REDPANDA_ADMINAPI_ENABLED: "false"
+#      REDPANDA_ADMINAPI_URLS: http://redpanda:9644
+#    volumes:
+#      - ./redpanda-console-config.yml:/tmp/config.yml
+
+
 networks:
   exemplo-tier:
     driver: bridge
